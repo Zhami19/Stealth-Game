@@ -11,8 +11,8 @@ public class LineOfSight : MonoBehaviour
 
     [SerializeField] float viewDistance = 5f;
     [SerializeField, Range(-1f, 1f)] float ordinate = .5f;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float ViewDistance => viewDistance;
+    
     void Start()
     {
         Gizmos.color = Color.red;

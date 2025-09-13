@@ -3,7 +3,7 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
     // movement values
     [Header("Movement Values")]
