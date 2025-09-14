@@ -1,4 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Sensor : MonoBehaviour
 {
@@ -19,10 +23,30 @@ public class Sensor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
+        Debug.Log("Collided with something");
+        Ray ray = new Ray(transform.position, player.transform.position);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, lineOfSight.ViewDistance))
+        {
+            Debug.DrawRay(transform.position, (player.transform.position - transform.position) * hit.distance, Color.yellow);
+            if (hit.collider.tag == "Wall")
+            {
+                Debug.Log("Oh, it's just a wall...");
+            }
+
+        }
+        else if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
         {
             lastHeard = player.transform.position;
+            lineOfSight.InitialInvestigationTime();
             guard.guardState = Guard.GuardStates.Investigate;
         }
+
+        /*if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
+        {
+            lastHeard = player.transform.position;
+            lineOfSight.InitialInvestigationTime();
+            guard.guardState = Guard.GuardStates.Investigate;
+        }*/
     }
 }

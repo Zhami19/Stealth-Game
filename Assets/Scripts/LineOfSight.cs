@@ -4,6 +4,7 @@ using UnityEngine;
 public class LineOfSight : MonoBehaviour
 {
     [SerializeField] Transform target;
+    Guard guard;
 
     Vector3 directionToTarget;
     Vector3 forwardDirection;
@@ -11,17 +12,22 @@ public class LineOfSight : MonoBehaviour
 
     [SerializeField] float viewDistance = 5f;
     [SerializeField, Range(-1f, 1f)] float ordinate = .5f;
+
+    [SerializeField] float investigationTime = 3f;
+    float originalInvestigationTime;
     public float ViewDistance => viewDistance;
     
     void Start()
-    {
+    { 
+        guard = GetComponent<Guard>();  
         Gizmos.color = Color.red;
+        originalInvestigationTime = investigationTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        directionToTarget = (target.position - transform.position).normalized;
+        /*directionToTarget = (target.position - transform.position).normalized;
         forwardDirection = transform.forward;
 
         dot = Vector3.Dot(forwardDirection, directionToTarget);
@@ -29,6 +35,37 @@ public class LineOfSight : MonoBehaviour
 
         if ((dot > ordinate) && (distanceToTarget <= viewDistance))
             Debug.Log("He is in front");
+
+        if ((dot < -ordinate) && (distanceToTarget <= viewDistance))
+            Debug.Log("He is behind");*/
+    }
+
+    public void InitialInvestigationTime()
+    {
+        investigationTime = originalInvestigationTime;
+    }
+
+    public void SightDetection()
+    {
+        investigationTime -= Time.deltaTime;
+
+        directionToTarget = (target.position - transform.position).normalized;
+        forwardDirection = transform.forward;
+
+        dot = Vector3.Dot(forwardDirection, directionToTarget);
+        float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
+        if ((dot > ordinate) && (distanceToTarget <= viewDistance))
+        {
+            Debug.Log("He is in front");
+            guard.guardState = Guard.GuardStates.Pursue;
+        }
+        else if (investigationTime <= 0f)
+        {
+            investigationTime = originalInvestigationTime;
+            guard.InitialPatrol();
+            guard.guardState = Guard.GuardStates.Patrol;
+        }
 
         if ((dot < -ordinate) && (distanceToTarget <= viewDistance))
             Debug.Log("He is behind");

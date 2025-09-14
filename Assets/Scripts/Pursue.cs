@@ -5,11 +5,13 @@ using System.Collections.Generic;
 
 public class Pursue : MonoBehaviour
 {
+    // References
     [SerializeField] NavMeshAgent agent;
     [SerializeField] Transform target;
     CharacterController characterController;
     NavMeshPath navPath;
 
+    // 
     [SerializeField] float speed;
     Vector3 currentTargetPoint;
     Queue<Vector3> remainingPoints;
@@ -21,10 +23,24 @@ public class Pursue : MonoBehaviour
         navPath = new NavMeshPath();
         remainingPoints = new Queue<Vector3>();
 
-        if (agent.CalculatePath(target.position, navPath))
+        /*if (agent.CalculatePath(target.position, navPath))
         {
             Debug.Log("found path to target");
             foreach(Vector3 point in navPath.corners)
+            {
+                remainingPoints.Enqueue(point);
+            }
+
+            currentTargetPoint = remainingPoints.Dequeue();
+        }*/
+    }
+
+    private void OnEnable()
+    {
+        if (agent.CalculatePath(target.position, navPath))
+        {
+            Debug.Log("found path to target");
+            foreach (Vector3 point in navPath.corners)
             {
                 remainingPoints.Enqueue(point);
             }
