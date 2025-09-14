@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine.Events;
 
 public class Sensor : MonoBehaviour
 {
@@ -11,6 +8,8 @@ public class Sensor : MonoBehaviour
     [SerializeField] Player player;
 
     private Vector3 lastHeard;
+
+    public UnityEvent OnInvestigate;
     public Vector3 LastHeard => lastHeard;
 
     private void Update()
@@ -37,6 +36,7 @@ public class Sensor : MonoBehaviour
             {
                 lastHeard = player.transform.position;
                 lineOfSight.InitialInvestigationTime();
+                OnInvestigate?.Invoke();
                 guard.guardState = Guard.GuardStates.Investigate;
             }
         }

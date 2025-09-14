@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
 
     // unityEvents
     public UnityEvent OnWin;
+    public UnityEvent OnSkeak;
+    public UnityEvent OnNormal;
+
 
     public enum PlayerStates
     {
@@ -45,11 +48,13 @@ public class Player : MonoBehaviour
         if (playerState == PlayerStates.Normal)
         {
             playerState = PlayerStates.Sneaking;
+            OnSkeak.Invoke();
             moveSpeed /= 2;
         }
         else if (playerState == PlayerStates.Sneaking)
         {
             playerState = PlayerStates.Normal;
+            OnNormal.Invoke();
             moveSpeed *= 2;
         }
     }
