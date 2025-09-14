@@ -27,7 +27,7 @@ public class AudioManager : MonoBehaviour
 
     public void SneakingVolume()
     {
-        audioSource.volume /= 2;
+        audioSource.volume /= 3;
     }
 
     public void NormalVolume()
