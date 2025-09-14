@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
     // variables
     Vector3 movementVector;
 
+    // unityEvents
+    public UnityEvent OnWin;
+
     public enum PlayerStates
     {
         Normal,
@@ -54,5 +57,14 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         rb.linearVelocity = movementVector * moveSpeed;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Finish")
+        {
+            Time.timeScale = 0f;
+            OnWin.Invoke();
+        }
     }
 }

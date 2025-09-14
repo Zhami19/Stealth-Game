@@ -5,12 +5,13 @@ public class GameManager : MonoBehaviour
 {
     public void MainMenu()
     {
-        // Load Main Menu
+        SceneManager.LoadScene(0);
     }
 
     public void GamePlay()
     {
-
+        SceneManager.LoadScene(1);
+        Time.timeScale = 1f;
     }
 
     public void OnApplicationQuit()

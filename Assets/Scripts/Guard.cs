@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class Guard : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class Guard : MonoBehaviour
     // Investigating
     [SerializeField] float rotationSpeed;
 
+    //UnityEvents
+    public UnityEvent OnLose;
+    
 
     public enum GuardStates
     {
@@ -122,7 +126,8 @@ public class Guard : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log("You Lose");
+            Time.timeScale = 0f;
+            OnLose.Invoke();
         }
     }
 }
