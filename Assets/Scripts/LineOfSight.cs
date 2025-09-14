@@ -24,22 +24,6 @@ public class LineOfSight : MonoBehaviour
         originalInvestigationTime = investigationTime;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        /*directionToTarget = (target.position - transform.position).normalized;
-        forwardDirection = transform.forward;
-
-        dot = Vector3.Dot(forwardDirection, directionToTarget);
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-        if ((dot > ordinate) && (distanceToTarget <= viewDistance))
-            Debug.Log("He is in front");
-
-        if ((dot < -ordinate) && (distanceToTarget <= viewDistance))
-            Debug.Log("He is behind");*/
-    }
-
     public void InitialInvestigationTime()
     {
         investigationTime = originalInvestigationTime;

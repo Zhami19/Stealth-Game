@@ -11,9 +11,7 @@ public class Sensor : MonoBehaviour
     [SerializeField] Player player;
 
     private Vector3 lastHeard;
-
     public Vector3 LastHeard => lastHeard;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Update()
     {
@@ -24,7 +22,9 @@ public class Sensor : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Collided with something");
-        Ray ray = new Ray(transform.position, player.transform.position);
+
+        var direction = (player.transform.position - transform.position).normalized;
+        Ray ray = new Ray(transform.position, direction);
 
         if (Physics.Raycast(ray, out RaycastHit hit, lineOfSight.ViewDistance))
         {
@@ -33,20 +33,12 @@ public class Sensor : MonoBehaviour
             {
                 Debug.Log("Oh, it's just a wall...");
             }
-
+            else if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
+            {
+                lastHeard = player.transform.position;
+                lineOfSight.InitialInvestigationTime();
+                guard.guardState = Guard.GuardStates.Investigate;
+            }
         }
-        else if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
-        {
-            lastHeard = player.transform.position;
-            lineOfSight.InitialInvestigationTime();
-            guard.guardState = Guard.GuardStates.Investigate;
-        }
-
-        /*if ((other.gameObject.tag == "Player") && (player.playerState == Player.PlayerStates.Normal))
-        {
-            lastHeard = player.transform.position;
-            lineOfSight.InitialInvestigationTime();
-            guard.guardState = Guard.GuardStates.Investigate;
-        }*/
     }
 }

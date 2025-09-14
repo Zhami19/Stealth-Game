@@ -11,7 +11,7 @@ public class Guard : MonoBehaviour
     [SerializeField] Sensor sensor;
 
     // Variables
-    [SerializeField] float speed;
+    [SerializeField] float originalSpeed;
 
     // Patrolling
     [SerializeField] Transform[] patrolPoints;
@@ -34,7 +34,6 @@ public class Guard : MonoBehaviour
 
     void Start()
     {
-        //pursue = GetComponent<Pursue>();
         lineOfSight = GetComponent<LineOfSight>();
 
         // Initial patrol behavior
@@ -69,6 +68,8 @@ public class Guard : MonoBehaviour
     public void Patrolling()
     {
         Debug.Log("Patrolling");
+
+        agent.speed = originalSpeed;
         float distance = Vector3.Distance(transform.position, currentPatrolPoint.position);
 
         if (distance < 1)
@@ -91,6 +92,8 @@ public class Guard : MonoBehaviour
     {
         Debug.Log("Investigating");
 
+        agent.speed = originalSpeed;
+
         Vector3 direction = sensor.LastHeard - transform.position;
         direction.y = 0f;
 
@@ -103,6 +106,8 @@ public class Guard : MonoBehaviour
     public void Pursuing()
     {
         Debug.Log("Pursuing");
+
+        agent.speed *= 1.3f;
 
         float distance = Vector3.Distance(transform.position, target.transform.position);
         agent.SetDestination(target.transform.position);
